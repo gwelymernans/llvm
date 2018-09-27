@@ -1457,6 +1457,14 @@ bool FastISel::selectIntrinsicCall(const IntrinsicInst *II) {
     updateValueMap(II, ResultReg);
     return true;
   }
+  case Intrinsic::is_constant: {
+    Constant *ResCI = ConstantInt::getFalse(II->getContext());
+    unsigned ResultReg = getRegForValue(ResCI);
+    if (!ResultReg)
+      return false;
+    updateValueMap(II, ResultReg);
+    return true;
+  }
   case Intrinsic::experimental_stackmap:
     return selectStackmap(II);
   case Intrinsic::experimental_patchpoint_void:
